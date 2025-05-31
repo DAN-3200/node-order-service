@@ -1,0 +1,32 @@
+{
+  "name": "order-service",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "main.ts",
+  "author": "DAN-3200",
+  "license": "MIT",
+  "description": "RESTful API order",
+  "scripts": {
+    "dev": "pnpx ts-node --loader ts-node/esm main.ts",
+    "build": "pnpx tsc"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@prisma/client": "^6.8.2",
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.15.20",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.8.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,125 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  id         String        @id @default(uuid())
+  createdBy  String
+  items      ItemOrder[]
+  value      ValueOrder?
+  status     StatusOrder
+  createdAt  DateTime
+  updatedAt  DateTime?
+  canceledAt DateTime?
+  payment    PaymentOrder?
+  refClient  String
+  address    Address       @relation(fields: [addressId], references: [id])
+  addressId  String
+
+  @@map("orders")
+}
+
+model ValueOrder {
+  id          String @id @default(uuid())
+  baseValue   Float
+  deliveryFee Float
+  totalAmount Float
+  order       Order  @relation(fields: [id], references: [id])
+
+  @@map("value_orders")
+}
+
+model ItemOrder {
+  id           String @id @default(uuid())
+  refId        String
+  currentPrice Float
+  quantity     Int
+  orderId      String
+  order        Order  @relation(fields: [orderId], references: [id])
+
+  @@map("item_orders")
+}
+
+model PaymentOrder {
+  id     String        @id @default(uuid())
+  amount Float
+  method PaymentMethod
+  paidAt DateTime
+  status PaymentStatus
+  order  Order         @relation(fields: [id], references: [id])
+
+  @@map("payment_orders")
+}
+
+model Client {
+  id    String @id
+  name  String
+  age   Int?
+  phone String
+  email String
+
+  @@map("clients")
+}
+
+model Address {
+  id         String  @id @default(uuid())
+  cep        String
+  street     String
+  number     String
+  complement String?
+  city       String
+  state      String
+  Order      Order[]
+
+  @@map("addresses")
+}
+
+model Item {
+  id          String   @id
+  barCode     String
+  name        String
+  description String
+  imgUrl      String?
+  cust        Float
+  markup      Float
+  price       Float
+  quantity    Int
+  unit        Unit
+  labels      String[]
+
+  @@map("items")
+}
+
+// -----
+
+enum StatusOrder {
+  em_analise
+  pendente
+  confirmado
+  entregue
+  cancelado
+}
+
+enum PaymentMethod {
+  credito
+  debito
+  pix
+  dinheiro
+}
+
+enum PaymentStatus {
+  concluido
+  pendente
+}
+
+enum Unit {
+  KG
+  UN
+}
